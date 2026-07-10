@@ -3,9 +3,9 @@ on: workflow_dispatch
  
 env:
   ACR_LOGIN_SERVER: aistraining.azurecr.io
-  TAG_NAME: eshoponweb-019:1.0.0
+  TAG_NAME: eshoponweb-016:1.0.0
   IMAGE_NAME: ${{ vars.ACR_LOGIN_SERVER }}/${{ vars.TAG_NAME }}
-  RESOURCE_GROUP: aistraining
+  RESOURCE_GROUP: ais-training
   CLUSTER_NAME: aks-demo
  
 jobs:
@@ -13,23 +13,23 @@ jobs:
    ## if: false
     runs-on: ubuntu-latest
  
-    steps:
-      - name: Checkput source code
-        uses: actions/checkout@v7.0.0
+    # steps:
+      # - name: Checkput source code
+      #   uses: actions/checkout@v7.0.0
  
-      - name: ACR Login
-        uses: azure/docker-login@v1
-        with:
-          login-vserver: ${{ env.ACR_LOGIN_SERVER }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD}}
+      # - name: ACR Login
+      #   uses: azure/docker-login@v1
+      #   with:
+      #     login-vserver: ${{ env.ACR_LOGIN_SERVER }}
+      #     username: ${{ secrets.ACR_USERNAME }}
+      #     password: ${{ secrets.ACR_PASSWORD}}
  
-      - name: Build and Push Image
-        run: |
-          docker build -f src/Web/Dockerfile -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.TAG_NAME }} .
-          docker push ${{ env.ACR_LOGIN_SERVER }}/${{ env.TAG_NAME }}
+      # - name: Build and Push Image
+      #   run: |
+      #     docker build -f src/Web/Dockerfile -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.TAG_NAME }} .
+      #     docker push ${{ env.ACR_LOGIN_SERVER }}/${{ env.TAG_NAME }}
   deploy-to-aks:
-    needs: build-container
+    # needs: build-container
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.0
@@ -43,6 +43,7 @@ jobs:
         with:
           container-registry-url: ${{ env.ACR_LOGIN_SERVER }}
           container-registry-name: aistraining
+          container-registry-username: ${{ secretes.ACR_USERNAME }}
           container-registry-password: ${{ secrets.ACR_PASSWORD }}
           secret-name: aks-secret
  
@@ -52,4 +53,3 @@ jobs:
             .k8s/deployment.yaml
             .k8s/service.yaml
           images: ${{ env.ACR_LOGIN_SERVER }}/${{ env.TAG_NAME }}
-          imagepullsecrets: aks-secret  
