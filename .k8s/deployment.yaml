@@ -1,7 +1,10 @@
 apiVersion: apps/v1
+kind: Namespace
+metadata:
+  name: eshoponweb-rg-016
+
 kind: Deployment
 metadata:
-  namespace: eshoponweb-rg-016
   name: webapp
   labels:
     app: sample-app
