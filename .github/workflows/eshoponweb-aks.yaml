@@ -3,7 +3,7 @@ on: workflow_dispatch
  
 env:
   ACR_LOGIN_SERVER: aistraining.azurecr.io
-  TAG_NAME: eshoponweb-phanupong:1.0.0
+  TAG_NAME: eshoponweb-rg-016:1.0.0
   IMAGE_NAME: ${{ vars.ACR_LOGIN_SERVER }}/${{ vars.TAG_NAME }}
  
 jobs:
@@ -23,5 +23,5 @@ jobs:
  
       - name: Build and Push Image
         run: |
-          docker build . -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.TAG_NAME }}
+          docker build -f src/Dockerfile -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.TAG_NAME }} .
           docker push ${{ env.ACR_LOGIN_SERVER }}/${{ env.TAG_NAME }}
