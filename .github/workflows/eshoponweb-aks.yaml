@@ -12,10 +12,10 @@ jobs:
  
     steps:
       - name: Checkput source code
-        uses: actions/checkout@v7.0
+        uses: actions/checkout@v7.0.0
  
       - name: ACR Login
-        uses: actions/checkout@v7.0.0
+        uses: actions/login-action@4.4.0
         with:
           registry: ${{ env.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USERNAME }}
