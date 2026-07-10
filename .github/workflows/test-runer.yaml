@@ -2,7 +2,7 @@ name: Test Runner
 on: workflow_dispatch
 jobs:
   test-runners:
-    runs-on:
+    runs-on: |
      - self-hosted
      - docker
      - javascript
